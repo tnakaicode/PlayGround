@@ -8,18 +8,22 @@ Author: Mahesh Venkitachalam
 
 from bottle import route, run, request, response
 from bottle import static_file
-import random, argparse
+import random
+import argparse
 import RPi.GPIO as GPIO
-from time import sleep  
+from time import sleep
 import Adafruit_DHT
+
 
 @route('/hello')
 def hello():
     return "Hello Bottle World!"
 
+
 @route('/<filename:re:.*\.js>')
 def javascripts(filename):
     return static_file(filename, root='flot')
+
 
 @route('/plot')
 def plot():
@@ -166,22 +170,26 @@ $(document).ready(function() {
 </body>
 </html>
 '''
-    
+
+
 @route('/getdata', method='GET')
 def getdata():
     RH, T = Adafruit_DHT.read_retry(Adafruit_DHT.DHT11, 23)
     # return dict
     return {"RH": RH, "T": T}
-    
+
+
 @route('/ledctrl', method='POST')
 def ledctrl():
     val = request.forms.get('strState')
     on = bool(int(val))
-    GPIO.output(18, on) 
+    GPIO.output(18, on)
 
 # main() function
+
+
 def main():
-    print 'starting piweather...'
+    print('starting piweather...')
     # create parser
     parser = argparse.ArgumentParser(description="PiWeather...")
     # add expected arguments
@@ -197,6 +205,7 @@ def main():
     GPIO.output(18, False)
     # start server
     run(host=args.ipAddr, port=args.portNum, debug=True)
+
 
 # call main
 if __name__ == '__main__':

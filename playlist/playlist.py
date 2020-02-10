@@ -8,7 +8,8 @@ Author: Mahesh Venkitachalam
 Website: electronut.in
 """
 
-import re, argparse
+import re
+import argparse
 import sys
 from matplotlib import pyplot
 import plistlib
@@ -53,6 +54,7 @@ def findCommonTracks(fileNames):
     else:
         print("No common tracks!")
 
+
 def plotStats(fileName):
     """
     Plot some statistics by readin track information from playlist.
@@ -81,11 +83,11 @@ def plotStats(fileName):
     # cross plot
     x = np.array(durations, np.int32)
     # convert to minutes
-    x = x/60000.0
+    x = x / 60000.0
     y = np.array(ratings, np.int32)
     pyplot.subplot(2, 1, 1)
     pyplot.plot(x, y, 'o')
-    pyplot.axis([0, 1.05*np.max(x), -1, 110])
+    pyplot.axis([0, 1.05 * np.max(x), -1, 110])
     pyplot.xlabel('Track duration')
     pyplot.ylabel('Track rating')
 
@@ -119,9 +121,9 @@ def findDuplicates(fileName):
             if name in trackNames:
                 # if name and duration matches, increment count
                 # duration rounded to nearest second
-                if duration//1000 == trackNames[name][0]//1000:
+                if duration // 1000 == trackNames[name][0] // 1000:
                     count = trackNames[name][1]
-                    trackNames[name] = (duration, count+1)
+                    trackNames[name] = (duration, count + 1)
             else:
                 # add entry - duration and count
                 trackNames[name] = (duration, 1)
@@ -144,6 +146,8 @@ def findDuplicates(fileName):
     f.close()
 
 # Gather our code in a main() function
+
+
 def main():
     # create parser
     descStr = """
@@ -154,7 +158,7 @@ def main():
     group = parser.add_mutually_exclusive_group()
 
     # add expected arguments
-    group .add_argument('--common', nargs = '*', dest='plFiles', required=False)
+    group .add_argument('--common', nargs='*', dest='plFiles', required=False)
     group .add_argument('--stats', dest='plFile', required=False)
     group .add_argument('--dup', dest='plFileD', required=False)
 
@@ -172,6 +176,7 @@ def main():
         findDuplicates(args.plFileD)
     else:
         print("These are not the tracks you are looking for.")
+
 
 # main method
 if __name__ == '__main__':
